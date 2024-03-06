@@ -1,0 +1,26 @@
+name: artifact
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Make PDF Artifact
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+      - name: Get LibreOffice
+        run: |
+          sudo apt update
+          sudo apt install libreoffice
+      - name: Make artifact
+        run: soffice --convert-to pdf poster.odg
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: poster.pdf
+          path: poster.pdf
